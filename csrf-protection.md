@@ -92,22 +92,3 @@ module.exports = {
 }
 
 ```
-
-Supercharge provides the `csrfToken` Handlebars helper which returns the CSRF token value. You could then add a meta tag to your HTML and insert the value like this:
-
-```html
-<meta name="csrf-token" content="{{csrfToken}}">
-```
-
-Then you may fetch the CSRF token from the HTML source:
-
-
-```js
-const token = document.head.querySelector('meta[name="csrf-token"]');
-```
-
-Use the `token` value in your HTTP library, like Axios, and append it as a request header:
-
-```js
-axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content
-```
