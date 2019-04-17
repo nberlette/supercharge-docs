@@ -51,14 +51,37 @@ The `mode` defines how authentication is handled for each request. Supercharge s
 3. `try`: trying to authenticate every incoming request, but if the credentials are invalid, the request proceeds regardless
 
 
-
-
 ### Routes
-Running `node craft make:auth` creates authentication routes in your application. All route files will be placed in the `app/routes/auth` directory.
+Running `node craft make:auth` creates authentication routes in your application. All scaffolded route files will be placed in the `app/routes/auth` directory. The terminal output looks like this:
+
+```bash
+created: routes/home.js
+created: routes/auth/login.js
+created: routes/auth/signup.js
+created: routes/auth/logout.js
+created: routes/auth/forgot-password.js
+created: routes/auth/reset-password.js
+```
+
+Feel free to update any of these feels to your needs.
+
+Notice that the files use the user model imported from `app/models/user.js`. When changing the user model, make sure that the login still works as expected.
 
 
 ### Views
-Running `node craft make:auth` creates HTML views in your application. All web view files will be placed in the `resources/views/auth` directory.
+Running `node craft make:auth` creates HTML views in your application. All scaffolded web view files will be placed in the `resources/views/auth` directory. The terminal output looks like this:
+
+```bash
+created: views/home.hbs
+created: views/auth/login.hbs
+created: views/auth/signup.hbs
+created: views/auth/forgot-password.hbs
+created: views/auth/forgot-password-email-sent.hbs
+created: views/auth/reset-password.hbs
+created: views/auth/reset-password-success.hbs
+```
+
+You can change any of the Handlebars files. Adjust any file to your needs. Supercharge will load the view files from your application and serve them on the related routes.
 
 
 ### Authenticating Users
@@ -66,8 +89,49 @@ Running `node craft make:auth` creates HTML views in your application. All web v
 #### Redirects
 
 ### Retrieve the Authenticated User
+For authenticated requests, you may access the credentials via the `request` object.
+
+You can access the user in all [request lifecycle methods (middlewares)](/docs/{{version}}/middleware) after the request is authenticated (`onPostAuth`).
+
+```js
+module.exports = {
+  method: 'GET',
+  path: '/profile',
+  options: {
+    handler: (request, h) => {
+      const user = request.user()
+
+      // or destructure the properties of interest
+      const { id, email } = request.user()
+
+      return user
+    }
+  }
+}
+```
+
 
 #### Is the Current User Authenticated
+Determine whether the current request is authenticated either by checking
+
+- if `request.user()` has the user’s credentials or
+- if `request.auth.isAuthenticated` is `true`
+
+```js
+handler: (request, h) => {
+  if (request.user()) {
+    // user is logged in
+  }
+
+  // or
+
+  if (request.auth.isAuthenticated) {
+    // user is logged in
+  }
+}
+```
+
+The return value of `request.auth.isAuthenticated` is always a boolean. With `request.user()`, you’ll receive an object with credentials.
 
 
 ## Require Authentication on Routes
