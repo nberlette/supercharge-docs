@@ -37,11 +37,28 @@ Running the authentication scaffolding in your Supercharge app creates files for
 - user model
 
 
+### Authentication Strategies
+The `strategy` key describes the authentication strategy used on all routes. The value must be a valid authentication strategy. Supercharge will automatically load all authentication strategies from your `app/auth/strategies` directory.
+
+Running the `make:auth` command creates a new strategy called `session`.
+
+
+### Authentication Modes
+The `mode` defines how authentication is handled for each request. Supercharge supports the three authentication modes:
+
+1. `required`: authentication is required
+2. `optional`: the request must include valid credentials or no credentials at all
+3. `try`: trying to authenticate every incoming request, but if the credentials are invalid, the request proceeds regardless
+
+
+
+
 ### Routes
+Running `node craft make:auth` creates authentication routes in your application. All route files will be placed in the `app/routes/auth` directory.
 
 
 ### Views
-Running `node craft make:auth` will create HTML views in your application. All web view files will be placed in the `resources/views/auth` directory.
+Running `node craft make:auth` creates HTML views in your application. All web view files will be placed in the `resources/views/auth` directory.
 
 
 ### Authenticating Users
@@ -56,11 +73,22 @@ Running `node craft make:auth` will create HTML views in your application. All w
 ## Require Authentication on Routes
 The default authentication configuration in `config/auth.js` tries to authenticate a user, but will proceed the request if authentication fails.
 
-You certainly want routes to be only accessible by authenticated users and therefore require authentication.
+You certainly want routes to be only accessible by authenticated users and therefore require authentication. You can either configure authentication globally in `config/auth.js` or on individual routes.
+
+You'll find the following default authentication settings in your `config/auth.js`:
+
+```js
+default: {
+  strategy: 'session',
+  mode: 'try'
+}
+```
+
+You can use this type of configuration object on routes as well using [route-level authentication](#route-level-authentication).
 
 
 ### Authentication for all Routes
-
+You can define a default authentication handling in your `config/auth.js`. Customize the `default` property to your prefered setting, like required authentication for all routes:
 
 ```js
 default: {
@@ -71,21 +99,51 @@ default: {
 
 
 ### Route-level Authentication
-
+You can override the default authentication settings on each of your routes. Define authentication for individual routes using the `options.auth` property:
 
 ```js
 module.exports = {
   method: 'GET',
   path: '/profile',
-  config: {
+  options: {
     auth: {
-      strategy: 'session',
+      strategy: 'jwt',
       mode: 'required'
     },
     handler: (_, h) => h.view('user/profile')
   }
 }
 ```
+
+This setting requires a JWT authentication strategy for the `GET /profile` route. You must ensure that an authentication strategy called `jwt` is present in your sever.
+
+When using route-level authentication, you can rely on the default configuration and skip the keys in your custom settings.
+
+For example, imagine the default authentication settings have the following configuration:
+
+```js
+default: {
+  strategy: 'session',
+  mode: 'try'
+}
+```
+
+You can then skip the `strategy` key in your route settings like this:
+
+```js
+module.exports = {
+  method: 'GET',
+  path: '/profile',
+  options: {
+    auth: {
+      mode: 'required'
+    },
+    handler: (_, h) => h.view('user/profile')
+  }
+}
+```
+
+Supercharge will now use the default `session` strategy and mode `required` (instead of `try`).
 
 
 ### Throttle Logins
