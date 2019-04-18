@@ -85,8 +85,22 @@ You can change any of the Handlebars files. Adjust any file to your needs. Super
 
 
 ### Authenticating Users
+Having the routes, views, and model included in your application, you can start signing up new users. Start your server and visit the application's URI in your browser. You'll notice new links for login and sign up in the navigation.
+
+Ensure you're having an accessible MongoDB instance. Supercharge autoloads your models and as soon as it finds a file in your `app/models` directory, it'll try to connect to the database. You may use the [Hercules](/docs/{{version}}/hercules) virtual machine providing all the required developer tools.
+
 
 #### Redirects
+When a user successfully signs up or logs in to your application, they will be redirected to the `/home` URI. This is the default configuration defined in your `config/auth.js`. Adjust the values if you want different redirects post-authentication:
+
+```js
+redirects: {
+  login: Env.get('AUTH_REDIRECT_LOGIN', '/profile'),
+}
+```
+
+If you don't want to change the values in the configuration file, you can inject the redirect URI from [environment variables](/docs/{{version}}/configuration).
+
 
 ### Retrieve the Authenticated User
 For authenticated requests, you may access the credentials via the `request` object.
