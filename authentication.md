@@ -52,34 +52,15 @@ The `mode` defines how authentication is handled for each request. Supercharge s
 
 
 ### Routes
-Running `node craft make:auth` creates authentication routes in your application. All scaffolded route files will be placed in the `app/routes/auth` directory. The terminal output looks like this:
+Running `node craft make:auth` creates authentication routes in your application. All scaffolded route files will be placed in the `app/routes/auth` directory.
 
-```bash
-created: routes/home.js
-created: routes/auth/login.js
-created: routes/auth/signup.js
-created: routes/auth/logout.js
-created: routes/auth/forgot-password.js
-created: routes/auth/reset-password.js
-```
-
-Feel free to update any of these feels to your needs.
+Feel free to update any of the created route handlers to your needs.
 
 Notice that the files use the user model imported from `app/models/user.js`. When changing the user model, make sure that the login still works as expected.
 
 
 ### Views
-Running `node craft make:auth` creates HTML views in your application. All scaffolded web view files will be placed in the `resources/views/auth` directory. The terminal output looks like this:
-
-```bash
-created: views/home.hbs
-created: views/auth/login.hbs
-created: views/auth/signup.hbs
-created: views/auth/forgot-password.hbs
-created: views/auth/forgot-password-email-sent.hbs
-created: views/auth/reset-password.hbs
-created: views/auth/reset-password-success.hbs
-```
+Running `node craft make:auth` creates HTML views in your application. All scaffolded web view files will be placed in the `resources/views/auth` directory.
 
 You can change any of the Handlebars files. Adjust any file to your needs. Supercharge will load the view files from your application and serve them on the related routes.
 
