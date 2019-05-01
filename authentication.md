@@ -20,7 +20,7 @@ Scaffolding the authentication with `node craft make:auth` creates the user mode
 
 
 ## Authentication
-Supercharges ships with an authentication system that is initially not part of your application. In your application, you can scaffold everything related to authentication using:
+Supercharge ships with an authentication system that is initially not part of your application. In your application, you can scaffold everything related to authentication using:
 
 ```bash
 node craft make:auth
@@ -126,7 +126,7 @@ handler: (request, h) => {
 }
 ```
 
-The return value of `request.auth.isAuthenticated` is always a boolean. With `request.user()`, you’ll receive an object with credentials.
+The return value of `request.auth.isAuthenticated` is always a boolean. With `request.user()`, you’ll receive an object with credentials if the user is authenticated, `undefined` otherwise.
 
 
 ## Require Authentication on Routes
