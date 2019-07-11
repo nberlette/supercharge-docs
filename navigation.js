@@ -48,7 +48,8 @@ module.exports = {
       Hashing: 'hashing',
       Encryption: 'encryption',
       Events: 'events',
-      Logger: 'logger'
+      Logger: 'logger',
+      Collections: 'collections'
     }
   },
 
