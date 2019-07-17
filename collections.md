@@ -83,6 +83,7 @@ Here’s a list of available methods in the collections package:
 [size](#size)
 [slice](#slice)
 [splice](#splice)
+[size](#size)
 [some](#some)
 
 </div>
