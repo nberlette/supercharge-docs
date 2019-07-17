@@ -2,7 +2,7 @@
 
 
 ## Introduction
-Node.js is an event-driven platform, handling most of its processing asynchronously. The JavaScript Array class has no built-in support for asynchronous operations. That’s the reason working with arrays in Node.js can be cumbersome.
+Node.js is an event-driven platform, handling most of its processing asynchronously. The JavaScript Array class has no built-in support for asynchronous operations. That’s one reason working with arrays in Node.js can be cumbersome.
 
 The [`@supercharge/collections`](https://github.com/superchargejs/collections) package fills this gap. This package provides a fluent interface for working with JavaScript arrays. Create a new collection instance based on an array and run the items through a pipeline of operations.
 
@@ -33,7 +33,7 @@ The `@supercharge/collections` package lives independently from the Supercharge 
 npm i @supercharge/collections
 ```
 
-Of course, you can use this collections package with every project other than Supercharge. Enjoy!
+You can use this collections package with every project even if it’s not build on Supercharge. Enjoy!
 
 
 ## Creating Collection
@@ -67,14 +67,22 @@ Here’s a list of available methods in the collections package:
 [compact](#compact)
 [every](#every)
 [filter](#filter)
+[filterSeries](#filterseries)
 [find](#find)
 [flatMap](#flatmap)
 [forEach](#foreach)
 [forEachSeries](#foreachseries)
+[isEmpty](#isempty)
+[isNotEmpty](#isnotempty)
 [map](#map)
 [mapSeries](#mapseries)
 [reduce](#reduce)
 [reduceRight](#reduceright)
+[reject](#reject)
+[rejectSeries](#rejectseries)
+[size](#size)
+[slice](#slice)
+[splice](#splice)
 [some](#some)
 
 </div>
@@ -95,7 +103,7 @@ await Collect([1, 2, 3])
 
 Some of the methods (like `map`, `filter`, `collapse`, or `compact`) return the collection instance allowing you to chain additional methods to this pipeline.
 
-To retrieve the results of these operations, you must explicitely end your collection pipeline with `.all()`.
+To retrieve the results of these operations, you must explicitly end your collection pipeline with `.all()`.
 
 
 #### collapse
@@ -123,7 +131,7 @@ await Collect([0, null, undefined, 1, false, 2, '', 3, NaN])
 
 
 #### every
-The `every` method determines whether  all items in the collection satisfy testing function:
+The `every` method determines whether all items in the collection satisfy the testing function:
 
 ```js
 await Collect([1, 2, 3])
@@ -161,9 +169,29 @@ await Collect([1, 2, 3])
 // [ 1 ]
 ```
 
+See the [`reject`](#reject) method for the inverse of `filter`.
+
+
+#### filterSeries
+The `filterSeries` method keeps all items in the collection satisfying the (async) testing function. It runs each check **in sequence**:
+
+```js
+await Collect([1, 2, 3])
+  .filterSeries(async id => {
+    const user = await User.findById(id)
+
+    return user.scope === 'admin'
+  })
+  .all()
+
+// [ 1 ]
+```
+
+See the [`rejectSeries`](#rejectseries) method for the inverse of `filterSeries`.
+
 
 #### find
-The `find` method returns the first item in the collection that satisfies the (async) testing function, `undefined` otherwise.
+The `find` method returns the first item in the collection that satisfies the (async) testing function, `undefined` otherwise:
 
 ```js
 const usernames = ['marcus', 'norman', 'christian']
@@ -178,6 +206,8 @@ await Collect(usernames)
 
 // 'marcus'
 ```
+
+Hint: the `!!` operator converts any data type to boolean by using a “doubled negation”. If the value of `user` is `undefined`, it will return `false`, otherwise `true`.
 
 
 #### flatMap
@@ -206,7 +236,7 @@ await Collect(await queue.getActive())
 
 
 #### forEachSeries
-The `forEachSeries` method invokes the (async) callback on each collection item **in sequence*. This method has no return value.
+The `forEachSeries` method invokes the (async) callback on each collection item **in sequence**. This method has no return value.
 
 ```js
 const files = [
@@ -215,14 +245,34 @@ const files = [
 ]
 
 await Collect(files)
-  .forEach(async ({ tenantId, name }) => {
+  .forEachSeries(async ({ tenantId, name }) => {
     await Fs.writeFile(`./files/${tenantId}/${name}`)
   })
 ```
 
 
+#### isEmpty
+The `isEmpty` method returns `true` when the collection is empty, otherwise `false`:
+
+```js
+await Collect([]).isEmpty()
+
+// true
+```
+
+
+#### isNotEmpty
+The `isNotEmpty` method returns `true` when the collection is not empty, otherwise `false`:
+
+```js
+await Collect([]).isNotEmpty()
+
+// false
+```
+
+
 #### map
-The `map` method invokes the (async) callback on each collection item and returns an array of transformed items. Because `map` return a collection instance, you could chain further operations. You must explicitely start processing by calling `.all()`:
+The `map` method invokes the (async) callback on each collection item and returns an array of transformed items. Because `map` return a collection instance, you could chain further operations. You must explicitly start processing by calling `.all()`:
 
 ```js
 await Collect([1, 2, 3])
@@ -292,7 +342,7 @@ await Collect([1, 2, 3])
 
 
 #### reduceRight
-The `reduceRight` method is simular to `reduce`, reducing a collection to a single value. It invokes a(n async) reducer function on each array item **from right-to-left**, passing the result of each iteration to the subsequent iteration:
+The `reduceRight` method is similar to `reduce`, reducing a collection to a single value. It invokes a(n async) reducer function on each array item **from right-to-left**, passing the result of each iteration to the subsequent iteration:
 
 ```js
 await Collect([1, 2, 3])
@@ -304,6 +354,126 @@ await Collect([1, 2, 3])
 ```
 
 The `reduceRight` method takes the initial value as a second argument.
+
+
+#### reject
+The `reject` method removes all items from the collection satisfying the (async) testing function:
+
+```js
+await Collect([1, 2, 3, 4, 5])
+  .reject(async item => {
+    return item % 2 === 1 // true when odd
+  })
+  .all()
+
+// [2, 4]
+```
+
+See the [`filter`](#filter) method for the inverse of `reject`.
+
+
+#### rejectSeries
+The `rejectSeries` method removes all items from the collection satisfying the (async) testing function. It runs each check **in sequence**:
+
+```js
+await Collect([1, 2, 3, 4, 5])
+  .rejectSeries(async id => {
+    const user = await User.findById(id)
+
+    // remove users already subscribed to the newsletter
+    return user.subscribedToNewsletter()
+  })
+  .all()
+
+// [2, 3]
+```
+
+See the [`filterSeries`](#filterseries) method for the inverse of `rejectSeries`.
+
+
+#### size
+The `size` method returns the number of items in the collection:
+
+```js
+await Collect([1, 2, 3]).size()
+
+// 3
+```
+
+
+#### slice
+The `slice` method returns a slice of the collection starting at the given index without changing the collection:
+
+```js
+const collection = Collect([1, 2, 3, 4, 5, 6, 7])
+const chunk = collection.slice(2)
+
+chunk.all()
+
+// [3, 4, 5, 6, 7]
+
+collection.all()
+
+// [1, 2, 3, 4, 5, 6, 7]
+```
+
+You can limit the size of the slice by passing a second argument to the `slice` method:
+
+```js
+const collection = Collect([1, 2, 3, 4, 5, 6, 7])
+const chunk = collection.slice(2, 2)
+
+chunk.all()
+
+// [3, 4]
+```
+
+
+#### splice
+The `splice` method removes abd returns a slice of items from the collection starting at the given index:
+
+```js
+const collection = Collect([1, 2, 3, 4, 5])
+const chunk = collection.splice(2)
+
+chunk.all()
+
+// [3, 4, 5]
+
+collection.all()
+
+// [1, 2]
+```
+
+You can limit the size of the slice by passing a second argument:
+
+```js
+const collection = Collect([1, 2, 3, 4, 5])
+const chunk = collection.splice(2, 2)
+
+chunk.all()
+
+// [3, 4]
+
+collection.all()
+
+// [1, 2, 5]
+```
+
+You can replace the removed items by passing an array as the third argument:
+
+```js
+const collection = Collect([1, 2, 3, 4, 5])
+const chunk = collection.splice(2, 2, [10, 11])
+
+chunk.all()
+
+// [3, 4]
+
+collection.all()
+
+// [1, 2, 10, 11, 5]
+```
 
 
 #### some
