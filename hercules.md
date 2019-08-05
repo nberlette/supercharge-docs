@@ -255,9 +255,21 @@ Hercules creates MySQL and PostgreSQL users with username `hercules` and passwor
 A default database `hercules` is created when provising the box. Point your application to the PostgreSQL `hercules` database on `127.0.0.1` with port `5432`.
 
 
-## Manage Hercules Through Vagrant
+## SSH into the Hercules Box
 The `hercules` CLI gives you a convenient wrapper to start, suspend, restart, and update your box. The provisioning process will install the selected services on your box.
 
+Use SSH to manage the Hercules box. Connecting can be accomplished via two ways: using Hercules’ or Vagrant’s SSH command.
+
+
+### Hercules SSH
+The `hercules` CLI in version `1.1` and later comes with a dedicted `hercules ssh` command. This command connects you right into the Hercules box:
+
+```bash
+hercules ssh
+```
+
+
+### Vagrant SSH
 In case you want or need to manually check the configuration in your box, navigate a terminal to `~/hercules`. The "hercules" folder in your user's home directory contains the Hercules box and related `Vagrantfile`.
 
 From the hercules directory, you can run all Vagrant commands. To SSH into the Hercules box, execute `vagrant ssh` in your terminal. This connects you directly into the Hercules box. Customize the configuration to your needs. Remember that the Hercules box runs the Ubuntu operating system.
