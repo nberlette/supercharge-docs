@@ -52,7 +52,8 @@ module.exports = {
       Events: 'events',
       Logger: 'logger',
       Session: 'session',
-      Collections: 'collections'
+      Collections: 'collections',
+      'Promise Pool': 'promise-pool'
     }
   },
 
