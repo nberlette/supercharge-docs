@@ -49,7 +49,8 @@ module.exports = {
       Encryption: 'encryption',
       Events: 'events',
       Logger: 'logger',
-      Collections: 'collections'
+      Collections: 'collections',
+      'Promise Pool': 'promise-pool'
     }
   },
 
