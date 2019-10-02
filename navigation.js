@@ -66,6 +66,7 @@ module.exports = {
   Frontend: {
     slug: 'frontend',
     sections: {
+      Views: 'views',
       Assets: 'frontend-assets',
       Handlebars: 'handlebars',
       'Built-in Helpers': 'handlebars-helpers'
