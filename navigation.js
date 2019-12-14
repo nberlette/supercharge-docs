@@ -48,7 +48,14 @@ module.exports = {
       Hashing: 'hashing',
       Encryption: 'encryption',
       Events: 'events',
-      Logger: 'logger',
+      Logger: 'logger'
+    }
+  },
+
+  Packages: {
+    slug: 'packages',
+    sections: {
+      Strings: 'strings',
       Collections: 'collections',
       'Promise Pool': 'promise-pool',
       Streams: 'streams'
