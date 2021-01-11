@@ -19,7 +19,7 @@ module.exports = {
       Application: 'application',
       Development: 'development',
       Deployment: 'deployment',
-      Bootstrappers: 'bootstrappers'
+      'Service Providers': 'service-providers'
     }
   },
 
@@ -27,58 +27,20 @@ module.exports = {
     slug: 'essentials',
     sections: {
       Routing: 'routing',
-      Middleware: 'middleware',
-      Plugins: 'plugins',
-      Decorations: 'decorations',
-      'CSRF Protection': 'csrf-protection',
-      'App Lifecycle': 'app-lifecycle',
-      'Request Lifecycle': 'request-lifecycle',
-      Authentication: 'authentication',
-      Authorization: 'authorization',
-      Validation: 'validation'
-    }
-  },
-
-  Amplifier: {
-    slug: 'amplifier',
-    sections: {
-      'Craft CLI': 'craft-cli',
       Requests: 'requests',
       Responses: 'responses',
-      Mailer: 'mailer',
-      Filesystem: 'filesystem',
-      Hashing: 'hashing',
-      Encryption: 'encryption',
-      Events: 'events',
-      Logger: 'logger',
-      Session: 'session',
-      Queues: 'queues'
+      Middleware: 'middleware',
+      // 'CSRF Protection': 'csrf-protection',
+      'App Lifecycle': 'app-lifecycle',
+      'Request Lifecycle': 'request-lifecycle'
+      // Authentication: 'authentication',
+      // Authorization: 'authorization',
+      // Validation: 'validation'
     }
   },
 
-  Packages: {
-    slug: 'packages',
-    sections: {
-      Strings: 'strings',
-      Collections: 'collections',
-      'Promise Pool': 'promise-pool',
-      Map: 'map',
-      Set: 'set',
-      Streams: 'streams',
-      Goodies: 'goodies'
-    }
-  },
-
-  Database: {
-    slug: 'database',
-    sections: {
-      Connectors: 'database-connectors',
-      Pagination: 'pagination'
-    }
-  },
-
-  Frontend: {
-    slug: 'frontend',
+  Views: {
+    slug: 'views',
     sections: {
       Views: 'views',
       Assets: 'frontend-assets',
@@ -87,23 +49,51 @@ module.exports = {
     }
   },
 
-  Testing: {
-    slug: 'testing',
+  Amplifier: {
+    slug: 'amplifier',
     sections: {
-      'Getting Started': 'testing',
-      'Create & Debug Tests': 'create-and-debug-tests',
-      'HTTP Tests': 'http-tests',
-      Fakes: 'testing-fakes',
-      Database: 'database-testing'
+      'Craft CLI': 'craft-cli',
+      // Mailer: 'mailer',
+      Filesystem: 'filesystem',
+      // Hashing: 'hashing',
+      // Encryption: 'encryption',
+      // Events: 'events',
+      Logger: 'logger'
+      // Session: 'session',
+      // Queues: 'queues'
     }
   },
 
-  'In the Universe': {
-    slug: 'in-the-universe',
+  Packages: {
+    slug: 'packages',
     sections: {
-      Hercules: 'hercules',
-      'Rate Limiting': 'rate-limiting',
-      'Geo Locating': 'geo-locating'
+      Strings: 'strings',
+      'Promise Pool': 'promise-pool',
+      Collections: 'collections',
+      Map: 'map',
+      Set: 'set',
+      Streams: 'streams',
+      Goodies: 'goodies'
+      // Numbers: 'numbers'
     }
   }
+
+  // Database: {
+  //   slug: 'database',
+  //   sections: {
+  //     Connectors: 'database-connectors',
+  //     Pagination: 'pagination'
+  //   }
+  // },
+
+  // Testing: {
+  //   slug: 'testing',
+  //   sections: {
+  //     'Getting Started': 'testing',
+  //     'Create & Debug Tests': 'create-and-debug-tests',
+  //     'HTTP Tests': 'http-tests',
+  //     Fakes: 'testing-fakes',
+  //     Database: 'database-testing'
+  //   }
+  // },
 }
